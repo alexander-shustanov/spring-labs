@@ -17,12 +17,15 @@ public class Main {
     @Autowired
     private EmailRepository emailRepository;
 
-    public static void main(String[] args) {
-        SpringApplication.run(Main.class);
-    }
+    @Autowired
+    private CountryRepository countryRepository;
 
     @Autowired
     private PersonRepository repository;
+
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class);
+    }
 
     @PostConstruct
     public void init() {
@@ -42,5 +45,14 @@ public class Main {
 
         emailRepository.findOne(EmailSpecification.hasEmailEquals("foo"))
                 .ifPresent(System.out::println);
+
+
+        countryRepository.save(new Country("Russia", "RU"));
+        countryRepository.save(new Country("Romania", "RO"));
+
+        System.out.println(countryRepository.findCountryByCodeName("RU"));
+        countryRepository.findCountryByNameStartsWith("R").forEach(System.out::println);
+
+
     }
 }
